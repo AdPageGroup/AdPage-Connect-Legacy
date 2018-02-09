@@ -6,15 +6,11 @@
      
 ?>
 
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/ap-bridge/assets/style.css" />
-
 <script type="text/javascript">
     
     var siteDomain = '<?php echo get_site_url(); ?>';
     
 </script>
-
-<script type="text/javascript" src="/wp-content/plugins/ap-bridge/assets/scripts.js"></script>
 
 <div class="wrap" style="position: relative;">
     

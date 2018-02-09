@@ -15,6 +15,7 @@
 
     add_action('parse_request', 'ap_endpoint', 0);
     add_action('admin_menu', 'ap_admin_pages');
+    add_action('admin_enqueue_scripts', 'ap_admin_sources');
     register_activation_hook(__FILE__, 'ap_enable');
     register_deactivation_hook(__FILE__, 'ap_disable');
 
@@ -39,6 +40,17 @@
         delete_option('adpage_campaigns');
         
     }
+    
+    function ap_admin_sources() {
+        
+        // Attach the stylesheet
+        wp_enqueue_style('custom_wp_admin_css', plugins_url('assets/style.css', __FILE__));
+        
+        // Attach the scripts
+        wp_enqueue_script('custom_wp_admin_js', plugins_url('assets/scripts.js', __FILE__));
+        
+    }
+
 
     function ap_admin() {
 

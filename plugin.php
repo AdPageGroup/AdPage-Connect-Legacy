@@ -363,6 +363,13 @@
             // Download campaign from AdPage
             $campaign = ap_download_campaign($path);
             
+            // Create cache dir if it doesnt exist
+            if (!file_exists(dirname(__FILE__) . '/cache')) {
+                
+                mkdir(dirname(__FILE__) . '/cache');
+                
+            }
+            
             // Cache the campaign locally
             file_put_contents($cache, $campaign);
             

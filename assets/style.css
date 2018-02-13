@@ -1,3 +1,17 @@
+.adpage-header {
+    background: #fff;
+    padding: 35px 0;
+    width: calc(100% + 20px);
+    margin-left: -20px;
+    margin-bottom: 20px;
+}
+
+.adpage-header img {
+    height: 32px;
+    margin: 0 auto;
+    display: block;
+}
+
 .adpage-error {
     background: #f56363;
     color: #fff;
@@ -94,6 +108,16 @@
 }
 
 .connect-set {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 10000;
+}
+
+.connect-set-base {
     position: absolute;
     width: 350px;
     text-align: center;
@@ -102,22 +126,81 @@
     border: 1px solid #e5e5e5;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
     padding: 25px 50px;
-    top: 0;
+    top: 50%;
     left: 50%;
-    margin-left: -250px;
+    transform: translate(-50%, -50%);
 }
 
-.connect-set form {
+.connect-set-base form {
     display: inline-block;
     width: 100%;
 }
 
-.connect-set form input[type="text"] {
+.connect-set-base form input[type="text"] {
     width: 100%;
 }
 
-.connect-set form input[type="submit"] {
+.connect-set-base form input[type="submit"] {
     display: block;
     width: 100%;
     margin-top: 15px;
+}
+
+.account-details {
+    list-style: none;
+}
+
+.account-details li {
+    margin-bottom: 12px;
+}
+
+.account-details li span {
+    color: #2a2f60;
+    font-size: 23px;
+    margin-right: 5px;
+}
+
+.no-campaigns {
+    text-align: center;
+    margin: 100px 0;
+}
+
+.no-campaigns img {
+    height: 100px;
+}
+
+.no-campaigns h2 {
+    font-size: 26px;
+    font-weight: 400;
+}
+
+.no-campaigns p {
+    max-width: 500px;
+    margin: 0 auto;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.notification {
+    display: flex;
+    background: #86c7fe;
+    border: 1px solid #6fb5f1;
+    margin-bottom: 25px;
+    color: #fff;
+    padding: 10px 15px;
+}
+
+.notification img {
+    height: 38px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.notification span {
+    width: calc(100% - 50px);
+    min-height: 42px;
+    float: right;
+    line-height: 42px;
+    font-size: 15px;
+    font-weight: 100;
 }

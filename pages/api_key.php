@@ -3,8 +3,8 @@
     <div class="adpage-wrap">
         
         <div class="card">
-        
-            <img class="logo" src="https://sfp-static.com/content/images/header-logo-light.png" />
+
+            <img class="logo" src="<?php echo plugins_url('assets/images/adpage-logo.png', dirname(__FILE__)); ?>" />
             
             <h1>Get started in just a few clicks!</h1>
             <p class="info">
@@ -32,11 +32,7 @@
                 <div class="connect">
                     
                     <div class="img">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-                            <g class="nc-icon-wrapper" fill="#ffffff">
-                                <path d="M25.3 20c-1.65-4.66-6.08-8-11.3-8-6.63 0-12 5.37-12 12s5.37 12 12 12c5.22 0 9.65-3.34 11.3-8H34v8h8v-8h4v-8H25.3zM14 28c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
-                            </g>
-                        </svg>
+                        <img src="<?php echo plugins_url('assets/images/api-key.svg', dirname(__FILE__)); ?>" />
                     </div>
                 
                     <label>Enter your API-key:</label>

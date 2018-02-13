@@ -13,19 +13,19 @@
     
     define('API_URL', 'https://api.adpage.io');
 
-    add_action('parse_request', 'ap_endpoint', 0);
-    add_action('admin_menu', 'ap_admin_pages');
-    add_action('admin_enqueue_scripts', 'ap_admin_sources');
-    register_activation_hook(__FILE__, 'ap_enable');
-    register_deactivation_hook(__FILE__, 'ap_disable');
+    add_action('parse_request', 'adpb_endpoint', 0);
+    add_action('admin_menu', 'adpb_admin_pages');
+    add_action('admin_enqueue_scripts', 'adpb_admin_sources');
+    register_activation_hook(__FILE__, 'adpb_enable');
+    register_deactivation_hook(__FILE__, 'adpb_disable');
 
-    function ap_admin_pages() {
+    function adpb_admin_pages() {
     
-        add_menu_page('AdPage Settings', 'AdPage', 'manage_options', 'adpage', 'ap_admin', 'dashicons-book');
+        add_menu_page('AdPage Settings', 'AdPage', 'manage_options', 'adpage', 'adpb_admin', 'dashicons-book');
         
     }
 
-    function ap_enable() {
+    function adpb_enable() {
 
         // Create options in the database
         add_option('adpage_apikey', '');
@@ -33,7 +33,7 @@
         
     }
 
-    function ap_disable() {
+    function adpb_disable() {
         
         // Remove options in the database
         delete_option('adpage_apikey');
@@ -41,7 +41,7 @@
         
     }
     
-    function ap_admin_sources() {
+    function adpb_admin_sources() {
         
         // Attach the stylesheet
         wp_enqueue_style('custom_wp_admin_css', plugins_url('assets/style.css', __FILE__));
@@ -52,7 +52,7 @@
     }
 
 
-    function ap_admin() {
+    function adpb_admin() {
 
         // Set the action parameter, if any
         $action = (isset($_GET['action']) ? $_GET['action'] : '');
@@ -64,7 +64,7 @@
         if ($action == 'set_key') {
 
             // Validate the API-key
-            if (ap_validate_key($_POST['api-key'])->ok == true) {
+            if (adpb_validate_key($_POST['api-key'])->ok == true) {
                 
                 // Save the key if its valid
                 update_option('adpage_apikey', $_POST['api-key']);
@@ -106,12 +106,12 @@
             // Show a message to the user
             if ($i > 0) {
                 
-                ap_show_admin_message('success', 'Cache for <b>'.$i.' campaign(s)</b> has been cleared.');
+                adpb_show_admin_message('success', 'Cache for <b>'.$i.' campaign(s)</b> has been cleared.');
                 
             }
             else {
                 
-                ap_show_admin_message('warning', 'There wasn\'t any cache to clear.');
+                adpb_show_admin_message('warning', 'There wasn\'t any cache to clear.');
                 
             }
 
@@ -135,7 +135,7 @@
                 if (strlen($path) >= 5) {
                 
                     // Retrieve all users campaigns
-                    $api_request = ap_api_request('key');
+                    $api_request = adpb_api_request('key');
                     
                     $campaigns = json_decode($campaigns, true);
                     
@@ -160,13 +160,13 @@
                     update_option('adpage_campaigns', json_encode($campaigns));
                     
                     // Show a messaga to the user
-                    ap_show_admin_message('success', 'Campaign has been connected successfully!');
+                    adpb_show_admin_message('success', 'Campaign has been connected successfully!');
                 
                 }
                 else {
                     
                     // Show an error
-                    ap_show_admin_message('warning', 'Could not connect campaign, path must contain at least 5 characters.');
+                    adpb_show_admin_message('warning', 'Could not connect campaign, path must contain at least 5 characters.');
                     
                 }
                 
@@ -174,7 +174,7 @@
             else {
                 
                 // Show an error
-                ap_show_admin_message('warning', 'Could not connect campaign, path is not alphanumerical.');
+                adpb_show_admin_message('warning', 'Could not connect campaign, path is not alphanumerical.');
                 
             }
             
@@ -211,7 +211,7 @@
             update_option('adpage_campaigns', json_encode($campaigns_new));
             
             // Show a messaga to the user
-            ap_show_admin_message('success', 'Campaign has been disconnected successfully!');
+            adpb_show_admin_message('success', 'Campaign has been disconnected successfully!');
             
         }
         
@@ -227,7 +227,7 @@
         else {
             
             // Check if the key is valid
-            $api_request = ap_api_request('key');
+            $api_request = adpb_api_request('key');
             
             if ($api_request->ok == true) {
                   
@@ -250,14 +250,14 @@
         
     }
     
-    function ap_show_admin_message($type, $text) {
+    function adpb_show_admin_message($type, $text) {
         
         // Show a messaga to the user
         echo '<div class="notice notice-'.$type.'" style="padding: 10px 15px;">'.$text.'</div>';
         
     }
 
-    function ap_endpoint() {
+    function adpb_endpoint() {
         
         global $wp;
 
@@ -289,7 +289,7 @@
             $campaign_title = $campaign['title'];
             
             // Get the campaign content
-            $fetch_campaign = ap_get_campaign($campaign_path);
+            $fetch_campaign = adpb_get_campaign($campaign_path);
             
             if ($fetch_campaign != false) {
                 
@@ -307,10 +307,10 @@
     
     }
     
-    function ap_validate_key($key) {
+    function adpb_validate_key($key) {
         
         // Call the AdPage API
-        $result = ap_api_request($key);
+        $result = adpb_api_request($key);
         
         // Check if we've got content
         if ($result) {
@@ -326,7 +326,7 @@
         
     }
     
-    function ap_api_request($request_key) {
+    function adpb_api_request($request_key) {
         
         // Define the API-key
         if ($request_key != 'key') {
@@ -355,7 +355,7 @@
         
     }
     
-    function ap_get_campaign($path) {
+    function adpb_get_campaign($path) {
         
         // Create a hash from the path name
         $hash = md5($path);
@@ -391,7 +391,7 @@
         
     }
     
-    function ap_download_campaign($path) {
+    function adpb_download_campaign($path) {
         
         // Retrieve campaign from AdPage
         $request = wp_remote_get($path);

@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/ap-bridge/assets/style.css" />
-
 <div class="wrap">
     
     <div class="adpage-wrap">

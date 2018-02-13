@@ -8,7 +8,7 @@
         Author: AdPage Team
         Author URI: https://adpage.io/
     */
-    
+
     if (!defined('ABSPATH')) exit;
     
     define('API_URL', 'https://api.adpage.io');
@@ -18,6 +18,8 @@
     add_action('admin_enqueue_scripts', 'adpb_admin_sources');
     register_activation_hook(__FILE__, 'adpb_enable');
     register_deactivation_hook(__FILE__, 'adpb_disable');
+    
+    $notices = [];
 
     function adpb_admin_pages() {
     
@@ -53,6 +55,8 @@
 
 
     function adpb_admin() {
+        
+        global $notices;
 
         // Set the action parameter, if any
         $action = (isset($_GET['action']) ? $_GET['action'] : '');
@@ -106,12 +110,12 @@
             // Show a message to the user
             if ($i > 0) {
                 
-                adpb_show_admin_message('success', 'Cache for <b>'.$i.' campaign(s)</b> has been cleared.');
+                $notices[] = 'Cache for <b>'.$i.' campaign(s)</b> has been cleared.';
                 
             }
             else {
                 
-                adpb_show_admin_message('warning', 'There wasn\'t any cache to clear.');
+                $notices[] = 'There wasn\'t any cache to clear.';
                 
             }
 
@@ -160,13 +164,13 @@
                     update_option('adpage_campaigns', json_encode($campaigns));
                     
                     // Show a messaga to the user
-                    adpb_show_admin_message('success', 'Campaign has been connected successfully!');
+                    $notices[] = 'Campaign has been connected successfully!';
                 
                 }
                 else {
                     
                     // Show an error
-                    adpb_show_admin_message('warning', 'Could not connect campaign, path must contain at least 5 characters.');
+                    $notices[] = 'Could not connect campaign, path must contain at least 5 characters.';
                     
                 }
                 
@@ -174,7 +178,7 @@
             else {
                 
                 // Show an error
-                adpb_show_admin_message('warning', 'Could not connect campaign, path is not alphanumerical.');
+                $notices[] = 'Could not connect campaign, path is not alphanumerical.';
                 
             }
             
@@ -211,7 +215,7 @@
             update_option('adpage_campaigns', json_encode($campaigns_new));
             
             // Show a messaga to the user
-            adpb_show_admin_message('success', 'Campaign has been disconnected successfully!');
+            $notices[] = 'Campaign has been disconnected successfully.';
             
         }
         
@@ -247,13 +251,6 @@
             
         }
 
-        
-    }
-    
-    function adpb_show_admin_message($type, $text) {
-        
-        // Show a messaga to the user
-        echo '<div class="notice notice-'.$type.'" style="padding: 10px 15px;">'.$text.'</div>';
         
     }
 
@@ -373,7 +370,7 @@
         else {
             
             // Download campaign from AdPage
-            $campaign = ap_download_campaign($path);
+            $campaign = adpb_download_campaign($path);
             
             // Create cache dir if it doesnt exist
             if (!file_exists(dirname(__FILE__) . '/cache')) {

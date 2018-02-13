@@ -55,12 +55,12 @@
         ?>
         
             <div class="notice notice-warning" style="margin-bottom: 0;">
-                <div style="overflow: hidden;padding:20px 10px">
+                <div style="overflow: hidden;padding:20px 10px"><?php echo plugin_dir_url().'ap-bridge/assets/images/error.svg'; ?>
                     <img class="alignleft" style="margin: 0 15px 10px 0; width: 100px;" src="https://sfp-static.com/content/wordpress/plugin/images/error.svg" />
-                    <h2>You don't have a payment method set in AdPage!</h2>
-                    <p>That's okay but you need the Premium plan to publish campaigns. It's required to have campaigns published to show them on your WordPress website.</p>
+                    <h2>Your AdPage-subscription isn't premium.</h2>
+                    <p>That's okay but you need the Premium plan to publish campaigns. It's required to have campaigns published in order to show them on your WordPress website.</p>
                     <p>
-                        <a href="https://app.adpage.io/dashboard/subscription">Upgrade subscription »</a>
+                        <a href="https://app.adpage.io/dashboard/subscription?ref=ap-bridge" target="_blank">Upgrade subscription »</a>
                     </p>
                 </div>
             </div>

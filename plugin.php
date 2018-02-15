@@ -1,7 +1,7 @@
 <?php
 
     /*
-        Plugin Name: AdPage Bridge
+        Plugin Name: AdPage Connect
         Plugin URI: https://adpage.io/
         Description: Show your awesome AdPage campaigns in your WordPress-website
         Version: 1.0.0
@@ -11,23 +11,23 @@
 
     if (!defined('ABSPATH')) exit;
     
-    define('API_URL', 'https://api.adpage.io');
+    define('ADPGC_API_URL', 'https://api.adpage.io');
 
-    add_action('parse_request', 'adpb_endpoint', 0);
-    add_action('admin_menu', 'adpb_admin_pages');
-    add_action('admin_enqueue_scripts', 'adpb_admin_sources');
-    register_activation_hook(__FILE__, 'adpb_enable');
-    register_deactivation_hook(__FILE__, 'adpb_disable');
+    add_action('parse_request', 'adpgc_endpoint', 0);
+    add_action('admin_menu', 'adpgc_admin_pages');
+    add_action('admin_enqueue_scripts', 'adpgc_admin_sources');
+    register_activation_hook(__FILE__, 'adpgc_enable');
+    register_deactivation_hook(__FILE__, 'adpgc_disable');
     
     $notices = [];
 
-    function adpb_admin_pages() {
+    function adpgc_admin_pages() {
     
-        add_menu_page('AdPage Settings', 'AdPage', 'manage_options', 'adpage', 'adpb_admin', 'dashicons-book');
+        add_menu_page('AdPage Settings', 'AdPage', 'manage_options', 'adpage', 'adpgc_admin', plugins_url('assets/images/icon.svg', __FILE__));
         
     }
 
-    function adpb_enable() {
+    function adpgc_enable() {
 
         // Create options in the database
         add_option('adpage_apikey', '');
@@ -35,7 +35,7 @@
         
     }
 
-    function adpb_disable() {
+    function adpgc_disable() {
         
         // Remove options in the database
         delete_option('adpage_apikey');
@@ -43,7 +43,7 @@
         
     }
     
-    function adpb_admin_sources() {
+    function adpgc_admin_sources() {
         
         // Attach the stylesheet
         wp_enqueue_style('custom_wp_admin_css', plugins_url('assets/style.css', __FILE__));
@@ -54,7 +54,7 @@
     }
 
 
-    function adpb_admin() {
+    function adpgc_admin() {
         
         global $notices;
 
@@ -68,7 +68,7 @@
         if ($action == 'set_key') {
 
             // Validate the API-key
-            if (adpb_validate_key($_POST['api-key'])->ok == true) {
+            if (adpgc_validate_key($_POST['api-key'])->ok == true) {
                 
                 // Save the key if its valid
                 update_option('adpage_apikey', $_POST['api-key']);
@@ -139,7 +139,7 @@
                 if (strlen($path) >= 5) {
                 
                     // Retrieve all users campaigns
-                    $api_request = adpb_api_request('key');
+                    $api_request = adpgc_api_request('key');
                     
                     $campaigns = json_decode($campaigns, true);
                     
@@ -231,7 +231,7 @@
         else {
             
             // Check if the key is valid
-            $api_request = adpb_api_request('key');
+            $api_request = adpgc_api_request('key');
             
             if ($api_request->ok == true) {
                   
@@ -254,7 +254,7 @@
         
     }
 
-    function adpb_endpoint() {
+    function adpgc_endpoint() {
         
         global $wp;
 
@@ -286,7 +286,7 @@
             $campaign_title = $campaign['title'];
             
             // Get the campaign content
-            $fetch_campaign = adpb_get_campaign($campaign_path);
+            $fetch_campaign = adpgc_get_campaign($campaign_path);
             
             if ($fetch_campaign != false) {
                 
@@ -304,10 +304,10 @@
     
     }
     
-    function adpb_validate_key($key) {
+    function adpgc_validate_key($key) {
         
         // Call the AdPage API
-        $result = adpb_api_request($key);
+        $result = adpgc_api_request($key);
         
         // Check if we've got content
         if ($result) {
@@ -323,7 +323,7 @@
         
     }
     
-    function adpb_api_request($request_key) {
+    function adpgc_api_request($request_key) {
         
         // Define the API-key
         if ($request_key != 'key') {
@@ -338,7 +338,7 @@
         }
 
         // Get all campaigns from AdPage
-        $request = wp_remote_get(API_URL . '/info', array(
+        $request = wp_remote_get(ADPGC_API_URL . '/info', array(
             'body'    => $data,
             'headers' => array(
                 'Token' => $key,
@@ -352,7 +352,7 @@
         
     }
     
-    function adpb_get_campaign($path) {
+    function adpgc_get_campaign($path) {
         
         // Create a hash from the path name
         $hash = md5($path);
@@ -370,7 +370,7 @@
         else {
             
             // Download campaign from AdPage
-            $campaign = adpb_download_campaign($path);
+            $campaign = adpgc_download_campaign($path);
             
             // Create cache dir if it doesnt exist
             if (!file_exists(dirname(__FILE__) . '/cache')) {
@@ -388,7 +388,7 @@
         
     }
     
-    function adpb_download_campaign($path) {
+    function adpgc_download_campaign($path) {
         
         // Retrieve campaign from AdPage
         $request = wp_remote_get($path);

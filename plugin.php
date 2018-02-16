@@ -137,34 +137,45 @@
                 
                 // Path needs at least 5 characters
                 if (strlen($path) >= 5) {
+                    
+                    // Validate received hash
+                    if (!preg_match('/[^a-z\-0-9]/i', $hash)) {
                 
-                    // Retrieve all users campaigns
-                    $api_request = adpgc_api_request('key');
-                    
-                    $campaigns = json_decode($campaigns, true);
-                    
-                    // Loop through all campaigns
-                    foreach ($api_request->campaigns as $api_campaign) {
+                        // Retrieve all users campaigns
+                        $api_request = adpgc_api_request('key');
                         
-                        // Add the new campaign
-                        if ($hash == $api_campaign->hash) {
+                        $campaigns = json_decode($campaigns, true);
+                        
+                        // Loop through all campaigns
+                        foreach ($api_request->campaigns as $api_campaign) {
                             
-                            $campaigns[$hash] = array(
-                                'hash' => $api_campaign->hash,
-                                'title' => $api_campaign->name,
-                                'path' => $api_campaign->link,
-                                'slug' => $path
-                            );
+                            // Add the new campaign
+                            if ($hash == $api_campaign->hash) {
+                                
+                                $campaigns[$hash] = array(
+                                    'hash' => $api_campaign->hash,
+                                    'title' => $api_campaign->name,
+                                    'path' => $api_campaign->link,
+                                    'slug' => $path
+                                );
+                                
+                            }
                             
                         }
                         
+                        // Update database entities
+                        update_option('adpage_campaigns', json_encode($campaigns));
+                        
+                        // Show a messaga to the user
+                        $notices[] = 'Campaign has been connected successfully!';
+                        
+                        
                     }
-                    
-                    // Update database entities
-                    update_option('adpage_campaigns', json_encode($campaigns));
-                    
-                    // Show a messaga to the user
-                    $notices[] = 'Campaign has been connected successfully!';
+                    else {
+                        
+                        $notices[] = 'Invalid parameters received!';
+                        
+                    }
                 
                 }
                 else {
@@ -190,32 +201,42 @@
             // The hash of the campaign to delete
             $hash = $_GET['hash'];
             
-            $campaigns = json_decode($campaigns, true);
+            // Validate received hash
+            if (!preg_match('/[^a-z\-0-9]/i', $hash)) {
             
-            $campaigns_new = array();
-            
-            // Loop through all results
-            foreach ($campaigns as $storage_campaign) {
+                $campaigns = json_decode($campaigns, true);
                 
-                // Remove the entity in case
-                if ($hash != $storage_campaign['hash']) {
+                $campaigns_new = array();
+                
+                // Loop through all results
+                foreach ($campaigns as $storage_campaign) {
                     
-                    $campaigns_new[$storage_campaign['hash']] = array(
-                        'hash' => $storage_campaign['hash'],
-                        'title' => $storage_campaign['title'],
-                        'path' => $storage_campaign['path'],
-                        'slug' => $storage_campaign['slug']
-                    );
+                    // Remove the entity in case
+                    if ($hash != $storage_campaign['hash']) {
+                        
+                        $campaigns_new[$storage_campaign['hash']] = array(
+                            'hash' => $storage_campaign['hash'],
+                            'title' => $storage_campaign['title'],
+                            'path' => $storage_campaign['path'],
+                            'slug' => $storage_campaign['slug']
+                        );
+                        
+                    }
                     
                 }
                 
+                // Update the entities in the database
+                update_option('adpage_campaigns', json_encode($campaigns_new));
+                
+                // Show a messaga to the user
+                $notices[] = 'Campaign has been disconnected successfully.';
+                
             }
-            
-            // Update the entities in the database
-            update_option('adpage_campaigns', json_encode($campaigns_new));
-            
-            // Show a messaga to the user
-            $notices[] = 'Campaign has been disconnected successfully.';
+            else {
+                
+                $notices[] = 'Invalid parameters received!';
+                
+            }
             
         }
         

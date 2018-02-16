@@ -2,8 +2,9 @@
 Contributors: adpage
 Donate link: https://adpage.io/
 Tags: adpage, campaign, marketing, pagebuilder, social
+Requires PHP: 5.6
 Requires at least: 4.0
-Tested up to: 4.8
+Tested up to: 4.9.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +53,8 @@ To save bandwidth and keep your website fast, the plugin creates a local version
 
 == Changelog ==
 
+Initial release
 
 == Upgrade Notice ==
 
+Your existing cache and API-key won't overwrite, nothing to worry about.

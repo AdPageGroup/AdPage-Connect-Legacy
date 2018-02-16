@@ -130,7 +130,7 @@
             
             // Get the posted content
             $hash = $_POST['hash'];
-            $path = $_POST['path'];
+            $path = trim($_POST['path']);
             
             // Path needs to be alphanumerical
             if ((ctype_alnum($path)) AND (isset($path))) {

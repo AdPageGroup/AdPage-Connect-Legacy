@@ -1,206 +1,145 @@
-.adpage-header {
-    background: #fff;
-    padding: 35px 0;
-    width: calc(100% + 20px);
-    margin-left: -20px;
-    margin-bottom: 20px;
+#wpcontent {
+    padding-left: 0!important;
 }
-
-.adpage-header img {
-    height: 32px;
-    margin: 0 auto;
-    display: block;
-}
-
-.adpage-error {
-    background: #f56363;
-    color: #fff;
-    font-size: 16px;
-    padding: 10px 25px;
-    margin: 0 auto;
-}
-
-.adpage-wrap .card {
-    margin: 50px auto;
-    padding: 50px 0 0 0;
-    text-align: center;
-    width: 500px;
-    border-radius: 5px;
-}
-
-.adpage-wrap .card .logo {
-    height: 45px;
-    margin-bottom: 35px;
-}
-
-.adpage-wrap .card h1 {
-    font-size: 26px;
-    font-weight: 500;
-    color: #232457;
-}
-
-.adpage-wrap .card p {
-    font-size: 15px;
-    color: #9e9ead;
-    width: 85%;
-    margin: 10px auto;
-    font-weight: 300;
-}
-
-.adpage-wrap .card .connect {
-    background: #83c5ff;
-    color: #fff;
-    padding: 25px 35px;
-    margin-top: 35px;
-    border-radius: 0 0 5px 5px;
-}
-
-.adpage-wrap .card .connect .img {
+.adpage-connect {
     position: relative;
 }
-
-.adpage-wrap .card .connect .img svg {
-    height: 60px;
-    width: 60px;
+.adpage-connect .container {
+    width: auto;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+.adpage-connect header {
+    background: #2f3260;
+    padding: 25px 0;
+}
+.adpage-connect header img {
+    height: 26px;
+    display: inline-block;
+    margin: 5px 0;
+}
+.adpage-connect header .title {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 30px;
+    border-left: 1px solid rgba(127, 198, 255, 0.2);
+}
+.adpage-connect header .title h2 {
+    margin: 8px 30px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+}
+.adpage-connect .content {
+    margin: 30px 0;
+}
+.adpage-connect .box-wrapper {
+    position: relative;
+}
+.adpage-connect .box-wrapper .box {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 30px 25px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    text-align: center;
+}
+.adpage-connect .box-wrapper .box .icon {
+    height: 100px;
+}
+.adpage-connect .box-wrapper .box h3 {
+    font-size: 22px;
+}
+.adpage-connect .box-wrapper .box p {
+    font-size: 14px;
+    max-width: 80%;
+    margin: 0 auto;
+}
+.adpage-connect .box-wrapper .box form {
+    margin: 25px auto;
+    max-width: 75%;
 }
 
-.adpage-wrap .card .connect label {
+.adpage-connect .box-wrapper .box form label {
     display: block;
-    font-size: 18px;
     font-weight: 600;
-    margin-top: 10px;
+    margin: 10px 0;
 }
-
-.adpage-wrap .card .connect input[type="text"] {
+.adpage-connect .box-wrapper .box form input {
     display: block;
     width: 100%;
-    margin: 15px 0;
-    border: none;
-    border-radius: 50px;
-    font-size: 14px;
-    color: #3075af;
-    text-align: center;
     padding: 10px 15px;
 }
-
-.adpage-wrap .card .connect input[type="text"]::-webkit-input-placeholder {
-    color: #c6cfd6;
-}
-
-.adpage-wrap .card .connect input[type="submit"] {
+.adpage-connect .box-wrapper .box form button {
     display: block;
-    width: calc(100% + 70px);
-    background: #468eca;
-    border: none;
+    width: 100%;
+    background: #7fc6ff;
+    border: 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
     color: #fff;
-    font-weight: 500;
-    font-size: 18px;
-    padding: 15px 0;
-    cursor: pointer;
-    margin: 35px 0 -25px -35px;
-    border-radius: 0 0 5px 5px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 10px 0;
+    margin: 10px 0;
 }
-
-.adpage-table .button {
-    display: inline-block;
-    width: 100px;
-    text-align: center;
-}
-
-.connect-set {
+.adpage-connect .modals {
     position: fixed;
+    z-index: 9999;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.25);
-    z-index: 10000;
+    background: rgba(0, 0, 0, 0.35);
 }
 
-.connect-set-base {
-    position: absolute;
-    width: 350px;
-    text-align: center;
-    background: #fff;
-    z-index: 3;
-    border: 1px solid #e5e5e5;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
-    padding: 25px 50px;
+.adpage-connect .modals .modal {
+    position: fixed;
     top: 50%;
     left: 50%;
+    width: 650px;
+    height: auto;
+    background: #fff;
     transform: translate(-50%, -50%);
-}
-
-.connect-set-base form {
-    display: inline-block;
-    width: 100%;
-}
-
-.connect-set-base form input[type="text"] {
-    width: 100%;
-}
-
-.connect-set-base form input[type="submit"] {
-    display: block;
-    width: 100%;
-    margin-top: 15px;
-}
-
-.account-details {
-    list-style: none;
-}
-
-.account-details li {
-    margin-bottom: 12px;
-}
-
-.account-details li span {
-    color: #2a2f60;
-    font-size: 23px;
-    margin-right: 5px;
-}
-
-.no-campaigns {
     text-align: center;
-    margin: 100px 0;
+    padding: 20px 25px;
 }
 
-.no-campaigns img {
-    height: 100px;
+.adpage-connect .modals .modal label {
+    text-align: left;
+    display: block;
 }
 
-.no-campaigns h2 {
-    font-size: 26px;
-    font-weight: 400;
+.adpage-connect .modals .modal .slug {
+    width: calc(100% - 22px);
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+    background-color: #fff;
+    color: #32373c;
+    outline: 0;
+    transition: 50ms border-color ease-in-out;
+    text-align: left;
+    padding: 5px 10px;
 }
 
-.no-campaigns p {
-    max-width: 500px;
-    margin: 0 auto;
-    font-size: 16px;
-    font-weight: 100;
+.adpage-connect .modals .modal .slug span {
+    font-size: 13px;
 }
 
-.notification {
-    display: flex;
-    background: #86c7fe;
-    border: 1px solid #6fb5f1;
-    margin-bottom: 25px;
-    color: #fff;
-    padding: 10px 15px;
+.adpage-connect .modals .modal .slug input {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    font-size: 13px;
+    padding-left: 0;
+    color: #222;
+    font-weight: 500;
+    margin-left: -2px;
 }
 
-.notification img {
-    height: 38px;
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.notification span {
-    width: calc(100% - 50px);
-    min-height: 42px;
-    float: right;
-    line-height: 42px;
-    font-size: 15px;
-    font-weight: 100;
+.adpage-connect .modals .modal .submit input {
+    width: 100%;
 }

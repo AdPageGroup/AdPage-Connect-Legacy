@@ -1,19 +1,95 @@
 jQuery(document).ready(function($) {
-    
-    $('.connect_campaign').click(function(e) {
-    
+   
+    $('.button-connect-campaign').click(function(e) {
+       
         e.preventDefault();
         
-        $('.connect-set form input[name="hash"]').val($(this).attr('data-hash'));
+        $('.modal form input[name="hash"]').val(
+            $(this).attr('data-hash')
+        );
         
-        $('.connect-set').show();
-    
+        $('.modals').show();
+        
     });
     
-    $('.connect-set form input[name="path"]').keyup(function() {
-    
-        $('.connect-domain').html(siteDomain + '/' + $('.connect-set form input[name="path"]').val());
-    
-    });
+    $('.modal form').submit(function(e) {
+       
+        e.preventDefault();
+        
+        $('.notification').hide();
+        $('.notification-busy').show();
+        
+        $.ajax({
+            type: 'POST',
+            url: '/adpgc-connect',
+            data: $('.modal form').serialize(),
+            dateType: 'JSON',
+            success: function(response) {
+                
+                $('.notification').hide();
+                
+                if (response.ok == true) {
+                    
+                    $('.notification-success').show();
+                    
+                    setTimeout(function() {
+                        window.location.replace('/wp-admin/admin.php?page=adpage');
+                    }, 2000);
+                    
+                }
+                else {
+                    
+                    $('.notification-error i').text(response.error);
+                    $('.notification-error').show();
+                    
+                }
 
+            },
+            error: function() {
+
+                alert('Could not execute your request. Please try again later!');
+
+            }
+        });
+        
+    });
+    
+    $('[data-campaign-hash] a.button-delete').click(function(e) {
+        
+        e.preventDefault();
+        
+        var campaignHash = $(this).attr('data-hash');
+        
+        $.ajax({
+            type: 'GET',
+            url: '/adpgc-disconnect',
+            data: {
+                hash: campaignHash
+            },
+            dateType: 'JSON',
+            success: function(response) {
+                
+                if (response.ok == true) {
+
+                    $('[data-campaign-hash="' + campaignHash + '"]').fadeOut(500, function() {
+                        $('[data-campaign-hash="' + campaignHash + '"]').remove();
+                    });
+                    
+                }
+                else {
+                    
+                    alert(response.error);
+                    
+                }
+
+            },
+            error: function() {
+
+                alert('Could not execute your request. Please try again later!');
+
+            }
+        });
+        
+    });
+    
 });

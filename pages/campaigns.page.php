@@ -1,168 +1,163 @@
+<?php if (!defined('ABSPATH')) exit; ?>
+
 <?php
-  
-    $campaigns = [];
     
-    foreach (AdPage::campaigns() as $campaign) {
+    $campaigns = AdPage::campaigns();
+    
+    $connected_campaigns = [];
+    
+    foreach ($wpdb->get_results('SELECT * FROM ' . $wpdb->prefix . 'adpage') as $campaign) {
         
-        if ($campaign->isPublished !== 0) {
-            
-            $campaigns[] = $campaign;
-            
-        }
+        $connected_campaigns[] = $campaign->hash;
         
     }
     
 ?>
-<div class="adpage-connect">
+
+<div class="adpgc">
     
-    <header>
+    <?php include __DIR__ . '/inc/header.inc.php'; ?>
+    
+    <div class="adpgc-wrapper">
         
-        <div class="container">
+        <div class="adpgc-container">
             
-            <img src="<?= ADPGC_CONFIG['LOGO']; ?>" class="logo" />
-            
-            <div class="title">
+            <div class="adpgc-campaigns">
                 
-                <h2>
-                    <span class="dashicons dashicons-admin-home"></span>&nbsp; Connect new campaign
-                </h2>
+                <?php foreach ($campaigns as $campaign) { ?>
+                        
+                    <div class="adpgc-campaign" data-campaign="<?= $campaign->hash; ?>">
+                        
+                        <div class="adpgc-meta">
+                        
+                            <strong>
+                                <?= $campaign->name; ?>
+                            </strong>
+                            
+                            <?php if (in_array($campaign->hash, $connected_campaigns)) { ?>
+                            
+                                <?php
+                                    
+                                    $campaign_connected_slug = $wpdb->get_var('SELECT slug FROM ' . $wpdb->prefix . 'adpage WHERE hash = "' . $campaign->hash . '"');
+                                    $campaign_connected_slug = site_url() . '/' . $campaign_connected_slug;
+                                    
+                                ?>
+                                <a href="<?= $campaign_connected_slug; ?>" target="_blank" class="adpgc-meta-link"><?= $campaign_connected_slug; ?></a>
+                            
+                            <?php } ?>
+                            
+                            <?php if ($campaign->isPublished == true) { ?>
+                                <span class="meta-green">
+                                    <b class="dashicons dashicons-yes"></b> Published
+                                </span>
+                            <?php } else { ?>
+                                <span>
+                                    <b class="dashicons dashicons-no-alt"></b> Unpublished
+                                </span>
+                            <?php } ?>
+                            
+                            <?php if (in_array($campaign->hash, $connected_campaigns)) { ?>
+                                <span class="meta-green">
+                                    <b class="dashicons dashicons-yes"></b> Connected
+                                </span>
+                            <?php } else { ?>
+                                <span>
+                                    <b class="dashicons dashicons-no-alt"></b> Not connected
+                                </span>
+                            <?php } ?>
+                                
+                        </div>
+                        
+                        <div class="adpgc-actions">
+                            
+                            <ul>
+                                
+                                <li>
+                                    <a href="<?= $campaign->domains[0]->domain; ?>" target="_blank">
+                                        <img src="<?= $adpgc_config['PLUGIN_ENDPOINT'] . '/assets/images/campaign-view.svg'; ?>" />
+                                        <span>View</span>
+                                    </a>
+                                </li>
+                                <?php if (in_array($campaign->hash, $connected_campaigns)) { ?>
+                                    <li>
+                                        <a href="<?= $campaign->hash; ?>" class="disconnect-campaign">
+                                            <img src="<?= $adpgc_config['PLUGIN_ENDPOINT'] . '/assets/images/campaign-disconnect.svg'; ?>" />
+                                            <span>Disconnect</span>
+                                        </a>
+                                    </li>
+                                <?php } elseif ($campaign->isPublished == true) { ?>
+                                    <li>
+                                        <a href="<?= $campaign->hash; ?>" class="connect-campaign">
+                                            <img src="<?= $adpgc_config['PLUGIN_ENDPOINT'] . '/assets/images/campaign-connect.svg'; ?>" />
+                                            <span>Connect</span>
+                                        </a>
+                                    </li>
+                                <?php } else { ?>
+                                    <li>
+                                        <a href="https://app.adpage.io/main/campaign/<?= $campaign->hash; ?>/publish?ref=adpage-connect" target="_blank">
+                                            <img src="<?= $adpgc_config['PLUGIN_ENDPOINT'] . '/assets/images/campaign-publish.svg'; ?>" />
+                                            <span>Publish</span>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                                
+                            </ul>
+                            
+                        </div>
+                        
+                    </div>
+                        
+                <?php } ?>
+            
+            </div>
+            
+            <div class="adpgc-modals" style="display: none;">
+                
+                <?php foreach ($campaigns as $campaign) { ?>
+                
+                    <?php if ($campaign->isPublished == true) { ?>
+                
+                        <div class="adpgc-modal" data-campaign="<?= $campaign->hash; ?>" style="display: none;">
+                            
+                            <div class="adpgc-modal-header">
+                                <?= $campaign->name; ?>
+                                <span class="adpgc-modal-close">
+                                    <b class="dashicons dashicons-no-alt"></b>
+                                </span>
+                            </div>
+                            
+                            <div class="adpgc-modal-content">
+                                
+                                <form method="post" action="/adpgc/connect">
+                                    
+                                    <p class="slug-preview">
+                                        <?= site_url(); ?>/<span>test-slug</span>
+                                    </p>
+                                    
+                                    <input type="hidden" name="hash" value="<?= $campaign->hash; ?>" />
+                                    <input type="hidden" name="title" value="<?= $campaign->name; ?>" />
+                                    <input type="hidden" name="domain" value="<?= $campaign->domains[0]->domain; ?>" />
+                                    
+                                    <input type="text" name="slug" value="" placeholder="test-slug" />
+                                    
+                                    <input type="submit" value="Connect" />
+                                    
+                                </form>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    <?php } ?>
+                    
+                <?php } ?>
                 
             </div>
             
         </div>
         
-    </header>
-    
-    <div class="content">
-        
-        <div class="container">
-            
-            <h1>Campaigns <small>(<i><?= sizeof($campaigns); ?></i>)</small></h1>
+    </div>
 
-            <p>
-                This list contains live, published campaigns. In order to connect campaigns, you must publish them in your AdPage dashboard. Please note that you need a eligible membership to do that.
-            </p>
-            
-            <br />
-            
-            <form id="posts-filter" method="get">
-    
-                <table class="adpage-table wp-list-table widefat fixed striped pages">
-                    <thead>
-                        <tr>
-                            <th scope="col" id="title" class="manage-column column-title column-primary">Title</th>
-                            <th scope="col" id="published" class="manage-column column-published" style="width: 150px;">Pages</th>
-                            <th scope="col" id="connected" class="manage-column column-connected" style="width: 250px;">Cache time</th>
-                            <th scope="col" id="date" class="manage-column column-date"></th>
-                        </tr>
-                    </thead>
-        
-                    <tbody id="the-list">
-        
-                        <?php foreach($campaigns as $campaign) { ?>
-        
-                            <tr id="post-2" class="iedit author-self level-0 post-2 type-page status-publish hentry">
-                                
-                                <td class="title column-title has-row-actions column-primary page-title" data-colname="Titel">
-                                    <div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span></div>
-                                    <strong>
-                                        <a class="row-title" href="#">
-                                            <?= $campaign->name; ?>
-                                        </a>
-                                    </strong>
-                                    
-                                    <div class="row-actions">
-                                        <span class="edit">
-                                            <a href="https://app.adpage.io/main/editor/2.0/<?= $campaign->hash; ?>?ref=adpage-connect" aria-label="Edit in AdPage" target="_blank">Edit in AdPage</a>
-                                            |
-                                            <a href="<?= $campaign->domains[0]->domain; ?>" aria-label="View campaign" target="_blank">View campaign</a>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="author column-published" data-colname="Published">
-                                    
-                                    <?php foreach($campaign->slugs as $slug) { ?>
-                                        
-                                        <?php if ($slug->slug == '/') { ?>
-                                        
-                                            <span class="dashicons dashicons-admin-home"></span> Homepage
-                                        
-                                        <?php } else { ?>
-                                        
-                                            <span class="dashicons dashicons-media-document"></span> <?= $slug->slug; ?>
-                                        
-                                        <?php } ?>
-                                        
-                                        <br />
-                                        
-                                    <?php } ?>
-                                    
-                                </td>
-                                <td class="date column-date" data-colname="Datum">
-                                    <?= date(ADPGC_CONFIG['DATE_TIME_FORMAT'], $campaign->cacheTime); ?>
-                                </td>
-                                <td class="author column-connected" data-colname="Connected">
-                                    <a href="admin.php?page=adpage&subpage=connect&campaign-hash=<?= $campaign->hash; ?>" class="button button-primary button-connect-campaign" data-hash="<?= $campaign->hash; ?>">Connect</a>
-                                </td>
-                            </tr>    
-                                    
-                        <?php } ?>
-        
-                    </tbody>
-                    
-                </table>
-                
-            </form>
-            
-        </div>
-        
-    </div>
-    
-    <div class="modals" style="display: none;">
-    
-        <div class="modal">
-            
-            <h3>Connect campaign</h3>
-            <p>
-                You can connect this campaign (and all pages) to a slug you want. 
-                But you can only link to a slug if there isn't anything else there yet.
-                A valid slug only contains letters (a-Z), numbers (0-9) and hyphens "-".
-            </p>
-            
-            <form method="post" novalidate="novalidate">
-                
-                <input type="hidden" name="hash" value="" />
-                
-                <label for="slug">Slug</label>
-                
-                <p class="slug">
-                    <span><?= get_site_url(); ?>/</span>
-                    <input type="text" name="slug" id="slug" placeholder="my-slug" />
-                </p>
-                
-                <p class="submit">
-                    <input type="submit" name="submit" id="submit" class="button button-primary" value="Connect now!">
-                </p>
-                
-            </form>
-            
-            <span class="notification notification-busy" style="display: none;">
-                <img src="<?= ADPGC_CONFIG['ASSET_PATH']; ?>/spinner.gif" />
-                Hold on and sit tight...
-            </span>
-            
-            <span class="notification notification-error" style="display: none;">
-                <strong>Whoops!</strong> 
-                <i></i>
-            </span>
-            
-            <span class="notification notification-success" style="display: none;">
-                <strong>Awesome!</strong> 
-                Your campaign has been connected successfully.
-            </span>
-            
-        </div>
-        
-    </div>
+    <?php include __DIR__ . '/inc/footer.inc.php'; ?>
     
 </div>

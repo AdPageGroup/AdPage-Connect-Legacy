@@ -3,7 +3,7 @@ Contributors: adpage
 Donate link: https://adpage.io/
 Tags: adpage, campaign, marketing, pagebuilder, social
 Requires PHP: 5.6
-Requires at least: 4.0
+Requires at least: 5.6
 Tested up to: 4.9.4
 Stable tag: trunk
 License: GPLv2 or later
@@ -41,20 +41,7 @@ To connect campaigns, you need to publish them first. We'll help you with that i
 
 Login on your dashboard on https://app.adpage.io/ and click on "settings", here you're able to generate the key. Simply paste it and you're good to go!
 
-= My campaign isn't updated! =
-
-To save bandwidth and keep your website fast, the plugin creates a local version of your campaign. When your campaign is modified in the editor, you need to clear the cache so the new version will be downloaded.
-
-
 == Screenshots ==
 
 1. Overview of your campaigns.
 2. Connect a campaign.
-
-== Changelog ==
-
-Initial release
-
-== Upgrade Notice ==
-
-Your existing cache and API-key won't overwrite, nothing to worry about.

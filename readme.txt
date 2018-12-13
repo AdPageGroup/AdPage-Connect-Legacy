@@ -3,7 +3,7 @@ Contributors: adpage
 Donate link: https://adpage.io/
 Tags: adpage, campaign, marketing, pagebuilder, social
 Requires PHP: 5.6
-Requires at least: 5.6
+Requires at least: 4.0
 Tested up to: 4.9.4
 Stable tag: trunk
 License: GPLv2 or later
